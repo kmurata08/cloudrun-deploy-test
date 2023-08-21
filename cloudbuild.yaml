@@ -1,0 +1,20 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--target', 'cat', '-t', 'gcr.io/$PROJECT_ID/go-api-cat', '.']
+    id: build-cat
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--target', 'dog', '-t', 'gcr.io/$PROJECT_ID/go-api-dog', '.']
+    id: build-dog
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/go-api-cat']
+    id: push-cat
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/go-api-dog']
+    id: push-dog
+
+images:
+  - 'gcr.io/$PROJECT_ID/go-api-cat'
+  - 'gcr.io/$PROJECT_ID/go-api-dog'
