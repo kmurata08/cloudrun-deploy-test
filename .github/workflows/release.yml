@@ -23,6 +23,8 @@ jobs:
           release_branch: production
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      release_tag: ${{ steps.calver.outputs.release }}
 
   build-go-docker-image-for-production:
     name: Build Go Docker Image for Production
@@ -45,8 +47,8 @@ jobs:
       - name: Trigger Cloud Build for Production
         env:
           ENV_NAME: production
+          VERSION: ${{ needs.tag.outputs.release_tag }}
         run: |
-          VERSION=$(cat release_tag)
           echo $VERSION
           gcloud builds submit --config=cloudbuild.yaml \
           --substitutions=_ENV_NAME=$ENV_NAME,_VERSION=$VERSION
