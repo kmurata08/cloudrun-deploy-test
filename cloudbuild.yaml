@@ -1,20 +1,20 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--target', 'cat', '-t', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_COMMIT_REF}', '.']
+    args: ['build', '--target', 'cat', '-t', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}', '.']
     id: build-cat
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--target', 'dog', '-t', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_COMMIT_REF}', '.']
+    args: ['build', '--target', 'dog', '-t', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}', '.']
     id: build-dog
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_COMMIT_REF}']
+    args: ['push', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}']
     id: push-cat
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_COMMIT_REF}']
+    args: ['push', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}']
     id: push-dog
 
 images:
-  - 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_COMMIT_REF}'
-  - 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_COMMIT_REF}'
+  - 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}'
+  - 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}'

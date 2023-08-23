@@ -5,7 +5,7 @@ DOG_IMAGE_TAG=gcr.io/${GCP_PROJECT_ID}/go-api-dog:development-${COMMIT_REF}
 REGION=asia-northeast1
 
 build:
-	gcloud builds submit --config cloudbuild.yaml --substitutions=_ENV_NAME=development,_COMMIT_REF=${COMMIT_REF}
+	gcloud builds submit --config cloudbuild.yaml --substitutions=_ENV_NAME=development,_VERSION=${COMMIT_REF}
 
 deploy_cat:
 	gcloud run deploy go-api-cat-service --image ${CAT_IMAGE_TAG} --platform managed --region ${REGION} --allow-unauthenticated --project ${GCP_PROJECT_ID}
