@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - production
+      - staging
+      - main
+
+jobs:
+  tag:
+    name: Release tag
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Calver Release
+        id: calver
+        uses: StephaneBour/actions-calver@v1.5
+        with:
+          date_format: "%Y.%m.%d"
+          release_branch: production
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-go-docker-image-for-production:
+    name: Build Go Docker Image for Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    needs: tag
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CLOUD_BUILD_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Trigger Cloud Build for Production
+        env:
+          ENV_NAME: production
+        run: |
+          VERSION=$(cat release_tag)
+          echo $VERSION
+          gcloud builds submit --config=cloudbuild.yaml \
+          --substitutions=_ENV_NAME=$ENV_NAME,_VERSION=$VERSION
+
+  build-go-docker-image-for-staging:
+    name: Build Go Docker Image for Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CLOUD_BUILD_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Trigger Cloud Build for Staging
+        env:
+          ENV_NAME: staging
+        run: |
+          VERSION=$(echo $GITHUB_SHA | cut -c1-7)
+          echo $VERSION
+          gcloud builds submit --config=cloudbuild.yaml \
+          --substitutions=_ENV_NAME=$ENV_NAME,_VERSION=$VERSION
