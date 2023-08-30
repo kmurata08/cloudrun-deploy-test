@@ -1,20 +1,20 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--target', 'cat', '-t', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}', '.']
+    args: ['build', '--target', 'cat', '-t', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-cat/go-api-cat:${_ENV_NAME}-${_VERSION}', '.']
     id: build-cat
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--target', 'dog', '-t', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}', '.']
+    args: ['build', '--target', 'dog', '-t', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-dog/go-api-dog:${_ENV_NAME}-${_VERSION}', '.']
     id: build-dog
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-cat/go-api-cat:${_ENV_NAME}-${_VERSION}']
     id: push-cat
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-dog/go-api-dog:${_ENV_NAME}-${_VERSION}']
     id: push-dog
 
 images:
-  - 'gcr.io/$PROJECT_ID/go-api-cat:${_ENV_NAME}-${_VERSION}'
-  - 'gcr.io/$PROJECT_ID/go-api-dog:${_ENV_NAME}-${_VERSION}'
+  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-cat/go-api-cat:${_ENV_NAME}-${_VERSION}'
+  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-dog/go-api-dog:${_ENV_NAME}-${_VERSION}'
