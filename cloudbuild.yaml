@@ -8,11 +8,11 @@ steps:
     id: build-dog
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-cat/go-api:${_ENV_NAME}-${_VERSION}']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api/go-api-cat:${_ENV_NAME}-${_VERSION}']
     id: push-cat
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api-dog/go-api:${_ENV_NAME}-${_VERSION}']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/go-api/go-api-dog:${_ENV_NAME}-${_VERSION}']
     id: push-dog
 
 images:
